@@ -2,7 +2,7 @@
 
 See on minu portfoolio.
 
-Power  BI andmebaasi skeema
+Power  BI andmebaasi skeem
 ![DB Schema](https://github.com/user-attachments/assets/abfc2a29-4dae-42f6-a4f5-251b9b89e7d5)
 
 Power BI skeem

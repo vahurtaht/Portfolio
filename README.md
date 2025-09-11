@@ -1,4 +1,4 @@
-[elektrihind.ipynb](https://github.com/user-attachments/files/22271612/elektrihind.ipynb)# Portfolio
+# Portfolio
 
 See on minu portfoolio.
 

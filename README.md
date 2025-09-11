@@ -11,4 +11,6 @@ Power BI skeem
 Power BI skeem 2
 ![Month sales vs budget](https://github.com/user-attachments/assets/5ed62d42-3afd-4478-af13-df6f6c452bf9)
 
+SQL Queries kataloogis on SQL päringute scriptid, mida sai tehtud koolitusel.
+
 Python kaustas on Python Jupyter fail elektrihind.ipynb, milles on elektrihinna arvutused ja nendest moodustatud graafikud.

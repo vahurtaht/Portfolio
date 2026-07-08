@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.ipynb_checkpoints
+
+# Docker
+.docker/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# dbt
+target/
+dbt_packages/
+.user.yml
+logs/
+
+# muu
+tmp/
+temp/
+*.tmp
+*.log
+.cache/
+
+.devcontainer

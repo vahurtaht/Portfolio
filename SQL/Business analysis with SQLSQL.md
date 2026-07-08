@@ -1,6 +1,6 @@
 # test
 
-Siin on testimise koht!
+SQL päringute kasutamine ärianalüüsis
 
 Dockeri käivitamine:
 

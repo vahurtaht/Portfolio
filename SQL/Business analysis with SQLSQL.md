@@ -2,7 +2,17 @@
 
 SQL päringute kasutamine ärianalüüsis
 
+
 Dockeri käivitamine:
+
+```bash
+# Keskkonnamuutujate kopeerimine
+cp .env.example .env
+
+# Kõik teenused (db, python, dbt, superset, airflow-init, Airflow API + scheduler + dag-processor)
+docker compose up -d --build
+docker compose ps   # oota "healthy" / "running"
+
 
 ```text
 docker compose up -d --build

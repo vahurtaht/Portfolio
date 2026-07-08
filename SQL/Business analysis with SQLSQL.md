@@ -1,7 +1,6 @@
-# test
+# SQL päringute kasutamine ärianalüüsis
 
-SQL päringute kasutamine ärianalüüsis
-
+Näidises kasutatakse Docker keskonda, kus käivitatakse Postgre SQL ja Python konteiner, mida kasutatakse SQL ja Python scripide käivitamist andmete laadimiseks ja analüüsiks.
 
 Dockeri käivitamine:
 
@@ -9,14 +8,9 @@ Dockeri käivitamine:
 # Keskkonnamuutujate kopeerimine
 cp .env.example .env
 
-# Kõik teenused (db, python, dbt, superset, airflow-init, Airflow API + scheduler + dag-processor)
+# Kõik teenused (Postgre SQL, Python)
 docker compose up -d --build
 docker compose ps   # oota "healthy" / "running"
-
-
-```text
-docker compose up -d --build
-
 ```
 
 SQL käivitamine:

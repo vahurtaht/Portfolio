@@ -1,63 +1,57 @@
-# SQL päringute kasutamine ärianalüüsis
+# Using SQL Queries in Business Analysis
 
-Näidises kasutatakse Docker keskonda, kus käivitatakse Postgre SQL ja Python konteiner, mida kasutatakse SQL ja Python scripide käivitamist andmete laadimiseks ja analüüsiks.
+This example uses a Docker environment where a PostgreSQL and a Python container are launched to run SQL and Python scripts for data loading and analysis.
 
-Dockeri käivitamine:
+Starting Docker:
 
 ```bash
-# Keskkonnamuutujate kopeerimine
+# Copying environment variables
 cp .env.example .env
 
-# Kõik teenused (Postgre SQL, Python)
+# All services (Postgre SQL, Python)
 docker compose up -d --build
-docker compose ps   # oota "healthy" / "running"
+docker compose ps   # wait for "healthy" / "running"
 ```
 
-SQL käivitamine:
+Running SQL:
 
 ```text
 docker compose exec db psql -U user -d postgresql
-
 ```
 
-SQL tabeli loomine:
+Creating SQL tabel:
 
 ```sql
 \i /scripts/Create_SQL_table_sales.sql
-
 ```
 
-Kontrolli tulemust:
+Check the resultt:
 
 ```text
 \dt
-
 ```
 
-Kontrolli, et skeemid tekkisid:
+Check that the schemas were created:
 
 ```text
 \dn
-
 ```
 
-CSV andmete laadimine Pythoniga:
+Loading CSV data with Python:
 
 ```text
 docker compose exec python python //scripts/import_sales.py
-
 ```
 
-PROFILEERIMINE
+PROFILING
 
--- Ridade arv
+-- Total number of rows
 
 ```sql
 SELECT COUNT(*) AS rows_total FROM sales;
-
 ```
 
--- Unikaalsed väärtused dimensioonides
+-- Unique values in dimensions
 
 ```sql
 SELECT
@@ -66,10 +60,9 @@ SELECT
     COUNT(DISTINCT category) AS categories,
     COUNT(DISTINCT region)   AS regions
 FROM sales;
-
 ```
 
--- Puuduvad väärtused veergude lõikes
+-- Missing values by column
 
 ```sql
 SELECT
@@ -77,10 +70,9 @@ SELECT
     SUM(CASE WHEN sale_date    IS NULL THEN 1 ELSE 0 END) AS missing_date,
     SUM(CASE WHEN sales_amount IS NULL THEN 1 ELSE 0 END) AS missing_amount
 FROM sales;
-
 ```
 
--- Statistiline kokkuvõte (vaste describe()-le)
+-- Statistical summary (equivalent to describe())
 
 ```sql
 SELECT
@@ -91,34 +83,30 @@ SELECT
     MIN(sale_date)       AS first_date,
     MAX(sale_date)       AS last_date
 FROM sales;
-
 ```
 
--- Mediaan (PostgreSQL/Oracle). MySQL-is mediaani otse pole.
+-- Mediaan.
 
 ```sql
 SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY sales_amount) AS median_amt
 FROM sales;
-
 ```
 
-ANDMEKVALITEET JA ANOMAALIAD
+DATA QUALITY AND ANOMALIES
 
--- Äärmuslikud müügisummad (outlier'id)
+-- Extreme sales amounts (outliers)
 
 ```sql
 SELECT * FROM sales WHERE sales_amount > 10000 ORDER BY sales_amount DESC;
-
 ```
 
--- Vigased kogused
+-- Invalid quantities
 
 ```sql
 SELECT * FROM sales WHERE quantity = 0 OR quantity < 0;
-
 ```
 
--- Täpsed duplikaadid (kõik veerud peale id sama)
+-- Exact duplicates (all columns except id are the same)
 
 ```sql
 SELECT sale_date, customer, product, category, quantity, sales_amount, region,
@@ -126,22 +114,20 @@ SELECT sale_date, customer, product, category, quantity, sales_amount, region,
 FROM sales
 GROUP BY sale_date, customer, product, category, quantity, sales_amount, region
 HAVING COUNT(*) > 1;
-
 ```
 
--- Korduvkasutatav "puhastatud" vaade: jätame välja anomaalia
+-- Exact duplicates (all columns except id are the same)
 
 ```sql
 CREATE VIEW sales_clean AS
 SELECT * FROM sales
 WHERE sales_amount < 10000
   AND quantity > 0;
-
 ```
 
-AGREGEERIMINE JA SEGMENTEERIMINE
+AGGREGATION AND SEGMENTATION
 
--- Müük regiooniti (summa, keskmine, arv – kolm vaadet)
+-- Sales by region (sum, average, count – three views)
 
 ```sql
 SELECT region,
@@ -151,10 +137,9 @@ SELECT region,
 FROM sales_clean
 GROUP BY region
 ORDER BY total_sales DESC;
-
 ```
 
--- Müük kategooriati
+-- Sales by category
 
 ```sql
 SELECT category,
@@ -164,10 +149,9 @@ SELECT category,
 FROM sales_clean
 GROUP BY category
 ORDER BY total_sales DESC;
-
 ```
 
--- Risttabel: Regioon × Kategooria (vaste pivot_table-le)
+-- Cross-table / Pivot table: Region × Category (equivalent to pivot_table)
 
 ```sql
 SELECT region,
@@ -178,16 +162,14 @@ SELECT region,
 FROM sales_clean
 GROUP BY region
 ORDER BY region;
-
 ```
 
-PALJUD KATEGOORIAD: Pareto / ABC-analüüs
+MULTIPLE CATEGORIES: Pareto / ABC Analysis
 
--- Pareto: tooted, mis annavad 80% käibest (window-funktsioonid)
+-- Pareto: products that generate 80% of revenue (window functions)
 
 ```sql
 \i /scripts/pairing.sql
-
 ```
 
 ```sql
@@ -211,14 +193,13 @@ SELECT product, total,
        END AS abc_class
 FROM ranked
 ORDER BY total DESC;
-
 ```
 
-running_total / grand_total annab kumulatiivse protsendi; A-klass = tooted, mis kokku moodustavad 80% käibest.
+Running_total / grand_total gives the cumulative percentage; Class A = products that combined make up 80% of the revenue.
 
-AJATRENDID JA PROGNOOS
+TIME TRENDS AND FORECASTING
 
--- Müük kuude lõikes
+-- Sales by month
 
 ```sql
 SELECT DATE_TRUNC('month', sale_date) AS month,   -- PostgreSQL
@@ -227,10 +208,9 @@ SELECT DATE_TRUNC('month', sale_date) AS month,   -- PostgreSQL
 FROM sales_clean
 GROUP BY DATE_TRUNC('month', sale_date)
 ORDER BY month;
-
 ```
 
--- 3-kuu liikuv keskmine (silumiseks)
+-- 3-month moving average (for smoothing)
 
 ```sql
 WITH monthly AS (
@@ -245,10 +225,9 @@ SELECT month, monthly_sales,
        ), 0) AS moving_avg_3m
 FROM monthly
 ORDER BY month;
-
 ```
 
--- Aasta-üle-aasta (YoY) võrdlus kuu kaupa
+-- Year-over-Year (YoY) comparison by month
 
 ```sql
 WITH monthly AS (
@@ -263,10 +242,9 @@ SELECT month, monthly_sales,
              / NULLIF(LAG(monthly_sales,12) OVER (ORDER BY month), 0), 1) AS yoy_percent
 FROM monthly
 ORDER BY month;
-
 ```
 
--- Ühikuhind toote kaupa (hinnaanalüüs)
+-- Unit price by product (price analysis)
 
 ```sql
 SELECT product,
@@ -274,10 +252,9 @@ SELECT product,
 FROM sales_clean
 GROUP BY product
 ORDER BY avg_unit_price DESC;
-
 ```
 
--- Top kliendid (lihtne RFM-i alus)
+-- Top customers (basic foundation for RFM)
 
 ```sql
 SELECT customer,
@@ -290,5 +267,5 @@ WHERE customer IS NOT NULL
 GROUP BY customer
 ORDER BY monetary DESC
 LIMIT 10;
-
 ```
+

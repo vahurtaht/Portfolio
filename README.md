@@ -20,3 +20,6 @@ The first page gives a quick overview of how this month sales are going compared
 
 The second page gives an overview of Year-to-Date sales and comparison with previous years same time period:
 ![YTD Sales](https://github.com/user-attachments/assets/0b450226-0073-4c97-8033-cc35ec1f0b45)
+
+# Python
+ (https://github.com/vahurtaht/Portfolio/blob/main/Python/elektrihind.ipynb)

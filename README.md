@@ -1,6 +1,5 @@
 # Portfolio
 
-See on minu portfoolio.
 Here you can find some examples of Power BI reports and SQL queries I have created.
 
 In addition to what is featured here on GitHub, I have also participated in the following team assignments and projects: 
@@ -9,10 +8,10 @@ In addition to what is featured here on GitHub, I have also participated in the 
 
 - „Forest value”: https://github.com/PiretKaap/Forest-value). BCS koolitus course ”Data Analytics“ 2025.
 
-Power  BI andmebaasi skeem
+Data model for the Sales Report is following:
 ![DB Schema](https://github.com/user-attachments/assets/abfc2a29-4dae-42f6-a4f5-251b9b89e7d5)
 
-Power BI skeem
+The first page gives a quick overview of how this month sales are going compared to budget:
 ![YTD Sales](https://github.com/user-attachments/assets/0b450226-0073-4c97-8033-cc35ec1f0b45)
 
 Power BI skeem 2

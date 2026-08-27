@@ -13,6 +13,7 @@ SQL Queries in Business Analysis (https://github.com/vahurtaht/Portfolio/blob/ma
 
 # Power BI
 Sares report (https://github.com/vahurtaht/Portfolio/tree/main/Power%20BI)
+
 Data model for the Sales Report is following:
 ![DB Schema](https://github.com/user-attachments/assets/abfc2a29-4dae-42f6-a4f5-251b9b89e7d5)
 

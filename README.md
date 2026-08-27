@@ -8,6 +8,9 @@ In addition to what is featured here on GitHub, I have also participated in the 
 
 - „Forest value”: https://github.com/PiretKaap/Forest-value). BCS koolitus course ”Data Analytics“ 2025.
 
+# SQL
+SQL Queries in Business Analysis 
+
 # Power BI
 Data model for the Sales Report is following:
 ![DB Schema](https://github.com/user-attachments/assets/abfc2a29-4dae-42f6-a4f5-251b9b89e7d5)
